@@ -1,0 +1,216 @@
+function TimeConfig(props) {
+  return (
+    <div className={props.className}>
+      <h2 id={props.labelID}>{props.label}</h2>
+      <div className="pomodoro-length" id={props.lengthID}>{props.length}</div>
+      <button
+        className="btn"
+        id={props.decrementID}
+        onClick={props.updatePomodoro}
+      >
+        -
+      </button>
+      <button
+        className="btn"
+        id={props.incrementID}
+        onClick={props.updatePomodoro}
+      >
+        +
+      </button>
+    </div>
+  );
+}
+
+function Timer(props) {
+  return (
+    <div className={props.className}>
+      <h2 id={props.labelID}>{props.label}</h2>
+      <div id={props.timeID} className="countdown">
+        {props.timeLeft}
+      </div>
+      <button
+        className="btn"
+        id={props.startStopID}
+        onClick={props.toggleTimer}
+      >
+        {props.startStop}
+      </button>
+      <button className="btn" id={props.resetID} onClick={props.reset}>
+        Reset
+      </button>
+      <audio
+        id="beep"
+        src="https://archive.org/download/carlosnochi_yahoo_Beep/beep.mp3"
+      />
+    </div>
+  );
+}
+
+class Pomodoro extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      break: 5,
+      session: 25,
+      timer: 1500,
+      sessionLabel: "Start Session",
+      sessionActive: false,
+      isPaused: false,
+      startStop: "Start"
+    };
+    this.updatePomodoro = this.updatePomodoro.bind(this);
+    this.resetPomodoro = this.resetPomodoro.bind(this);
+    this.toggleTimer = this.toggleTimer.bind(this);
+  }
+  componentDidUpdate() {
+    if (this.state.timer < 0 && this.state.sessionLabel === "Session") {
+      this.setState({
+        timer: this.state.break * 60,
+        sessionLabel: "Break"
+      });
+      const beep = document.getElementById("beep");
+      beep.currentTime = 0;
+      beep.play();
+    } else if (this.state.timer < 0 && this.state.sessionLabel === "Break") {
+      clearInterval(countdown);
+      this.setState({
+        break: 5,
+        session: 25,
+        timer: 1500,
+        sessionLabel: "Start Session",
+        sessionActive: false,
+        isPaused: false,
+        startStop: "Start"
+      });
+      const beep = document.getElementById("beep");
+      beep.currentTime = 0;
+      beep.play();
+    }
+  }
+  updatePomodoro(e) {
+    switch (e.target.id) {
+      case "break-decrement":
+        if (this.state.break > 1) {
+          this.setState({
+            break: --this.state.break
+          });
+        }
+        break;
+      case "break-increment":
+        if (this.state.break < 60) {
+          this.setState({
+            break: ++this.state.break
+          });
+        }
+        break;
+      case "session-decrement":
+        if (this.state.session > 1) {
+          this.setState({
+            session: --this.state.session,
+            timer: this.state.session * 60
+          });
+        }
+        break;
+      case "session-increment":
+        if (this.state.session < 60) {
+          this.setState({
+            session: ++this.state.session,
+            timer: this.state.session * 60
+          });
+        }
+        break;
+      default:
+        return;
+    }
+  }
+  resetPomodoro() {
+    if (this.state.sessionActive) {
+      clearInterval(countdown);
+    }
+
+    this.setState({
+      break: 5,
+      session: 25,
+      timer: 1500,
+      sessionLabel: "Start Session",
+      sessionActive: false,
+      isPaused: false,
+      startStop: "Start"
+    });
+    const beep = document.getElementById("beep");
+    beep.pause();
+    beep.currentTime = 0;
+  }
+
+  toggleTimer(e) {
+    if (!this.state.sessionActive) {
+      countdown = setInterval(() => {
+        this.setState({
+          timer: --this.state.timer
+        });
+      }, 1000);
+      this.setState({
+        sessionActive: true,
+        sessionLabel: "Session",
+        startStop: "Pause",
+        isPaused: false
+      });
+    } else if (!this.state.isPaused) {
+      clearInterval(countdown);
+      this.setState({ isPaused: true, startStop: "Play" });
+    } else if (this.state.isPaused) {
+      countdown = setInterval(() => {
+        this.setState({
+          timer: --this.state.timer
+        });
+      }, 1000);
+      this.setState({ isPaused: false, startStop: "Pause" });
+    }
+  }
+
+  render() {
+    return (
+      <div className="container">
+        <h1>🍅 Pomodoro 🍅</h1>
+        <Timer
+          className="timer"
+          label={this.state.sessionLabel}
+          timeLeft={`${
+            Math.floor(this.state.timer / 60) < 10 ? "0" : ""
+          }${Math.floor(this.state.timer / 60)}:${
+            this.state.timer % 60 < 10 ? "0" : ""
+          }${this.state.timer % 60}`}
+          startStop={this.state.startStop}
+          reset={this.resetPomodoro}
+          toggleTimer={this.toggleTimer}
+          labelID="timer-label"
+          timeID="time-left"
+          startStopID="start_stop"
+          resetID="reset"
+        />
+        <TimeConfig
+          className="time-config"
+          label="Break Length"
+          length={this.state.break}
+          labelID="break-label"
+          lengthID="break-length"
+          decrementID="break-decrement"
+          incrementID="break-increment"
+          updatePomodoro={this.updatePomodoro}
+        />
+        <TimeConfig
+          className="time-config"
+          label="Session Length"
+          length={this.state.session}
+          labelID="session-label"
+          lengthID="session-length"
+          decrementID="session-decrement"
+          incrementID="session-increment"
+          updatePomodoro={this.updatePomodoro}
+        />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<Pomodoro />, document.getElementById("root"));

@@ -67,7 +67,10 @@ class App extends Component {
         if (this.state.session > 1) {
           this.setState({
             session: this.state.session - 1,
-            timer: this.state.session * 60,
+          }, () => {
+            this.setState({
+              timer: this.state.session * 60
+            })
           });
         }
         break;
@@ -75,7 +78,10 @@ class App extends Component {
         if (this.state.session < 60) {
           this.setState({
             session: this.state.session + 1,
-            timer: this.state.session * 60,
+          }, () => {
+            this.setState({
+              timer: this.state.session * 60
+            })
           });
         }
         break;
@@ -142,7 +148,6 @@ class App extends Component {
           </span>
         </h1>
         <Timer
-          className="timer"
           label={this.state.sessionLabel}
           timeLeft={`${
             Math.floor(this.state.timer / 60) < 10 ? '0' : ''

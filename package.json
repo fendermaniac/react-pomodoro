@@ -1,6 +1,6 @@
 {
-  "name": "React Pomodoro App",
-  "homepage":"https://fendermaniac.github.io/react-pomodoro/",
+  "name": "react-pomodoro-app",
+  "homepage": "https://fendermaniac.github.io/react-pomodoro/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

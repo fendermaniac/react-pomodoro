@@ -1,5 +1,7 @@
 # React Pomodoro Timer
 
+[Live Project](https://fendermaniac.github.io/react-pomodoro/)
+
 ## Introduction
 
 This is a basic pomodoro timer build in React.  If you have not heard about the Pomodoro Technique it is a time management method that breaks work down into intervals separated by short breaks.  You can read more about it on it's Wikipedia page here [Pomodro](https://en.wikipedia.org/wiki/Pomodoro_Technique).

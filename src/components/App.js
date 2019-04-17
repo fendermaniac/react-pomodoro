@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
 import Timer from './Timer';
 import TimeConfig from './TimeConfig';
@@ -10,76 +11,79 @@ class App extends Component {
       break: 5,
       session: 25,
       timer: 1500,
-      sessionLabel: "Start Session",
+      sessionLabel: 'Start Session',
       sessionActive: false,
       isPaused: false,
-      startStop: "Start",
+      startStop: 'Start',
     };
     this.updatePomodoro = this.updatePomodoro.bind(this);
     this.resetPomodoro = this.resetPomodoro.bind(this);
     this.toggleTimer = this.toggleTimer.bind(this);
   }
+
   componentDidUpdate() {
-    if (this.state.timer < 0 && this.state.sessionLabel === "Session") {
+    if (this.state.timer < 0 && this.state.sessionLabel === 'Session') {
       this.setState({
         timer: this.state.break * 60,
-        sessionLabel: "Break"
+        sessionLabel: 'Break',
       });
-      const beep = document.getElementById("beep");
+      const beep = document.getElementById('beep');
       beep.currentTime = 0;
       beep.play();
-    } else if (this.state.timer < 0 && this.state.sessionLabel === "Break") {
+    } else if (this.state.timer < 0 && this.state.sessionLabel === 'Break') {
       clearInterval(this.countdown);
       this.setState({
         break: 5,
         session: 25,
         timer: 1500,
-        sessionLabel: "Start Session",
+        sessionLabel: 'Start Session',
         sessionActive: false,
         isPaused: false,
-        startStop: "Start"
+        startStop: 'Start',
       });
-      const beep = document.getElementById("beep");
+      const beep = document.getElementById('beep');
       beep.currentTime = 0;
       beep.play();
     }
   }
+
   updatePomodoro(e) {
     switch (e.target.id) {
-      case "break-decrement":
+      case 'break-decrement':
         if (this.state.break > 1) {
           this.setState({
-            break: this.state.break - 1
+            break: this.state.break - 1,
           });
         }
         break;
-      case "break-increment":
+      case 'break-increment':
         if (this.state.break < 60) {
           this.setState({
-            break: this.state.break + 1
+            break: this.state.break + 1,
           });
         }
         break;
-      case "session-decrement":
+      case 'session-decrement':
         if (this.state.session > 1) {
           this.setState({
             session: this.state.session - 1,
-            timer: this.state.session * 60
+            timer: this.state.session * 60,
           });
         }
         break;
-      case "session-increment":
+      case 'session-increment':
         if (this.state.session < 60) {
           this.setState({
             session: this.state.session + 1,
-            timer: this.state.session * 60
+            timer: this.state.session * 60,
           });
         }
         break;
       default:
-        return;
+        
     }
   }
+
   resetPomodoro() {
     if (this.state.sessionActive) {
       clearInterval(this.countdown);
@@ -89,12 +93,12 @@ class App extends Component {
       break: 5,
       session: 25,
       timer: 1500,
-      sessionLabel: "Start Session",
+      sessionLabel: 'Start Session',
       sessionActive: false,
       isPaused: false,
-      startStop: "Start"
+      startStop: 'Start',
     });
-    const beep = document.getElementById("beep");
+    const beep = document.getElementById('beep');
     beep.pause();
     beep.currentTime = 0;
   }
@@ -103,25 +107,25 @@ class App extends Component {
     if (!this.state.sessionActive) {
       this.countdown = setInterval(() => {
         this.setState({
-          timer: this.state.timer - 1
+          timer: this.state.timer - 1,
         });
       }, 1000);
       this.setState({
         sessionActive: true,
-        sessionLabel: "Session",
-        startStop: "Pause",
-        isPaused: false
+        sessionLabel: 'Session',
+        startStop: 'Pause',
+        isPaused: false,
       });
     } else if (!this.state.isPaused) {
       clearInterval(this.countdown);
-      this.setState({ isPaused: true, startStop: "Play" });
+      this.setState({ isPaused: true, startStop: 'Play' });
     } else if (this.state.isPaused) {
       this.countdown = setInterval(() => {
         this.setState({
-          timer: this.state.timer - 1
+          timer: this.state.timer - 1,
         });
       }, 1000);
-      this.setState({ isPaused: false, startStop: "Pause" });
+      this.setState({ isPaused: false, startStop: 'Pause' });
     }
   }
 
@@ -131,8 +135,8 @@ class App extends Component {
         <h1>
           <span role="img" aria-label="pomodoro-emoji">
             🍅
-          </span> 
-          Pomodoro 
+          </span>
+          Pomodoro
           <span role="img" aria-label="pomodoro-emoji">
             🍅
           </span>
@@ -141,9 +145,9 @@ class App extends Component {
           className="timer"
           label={this.state.sessionLabel}
           timeLeft={`${
-            Math.floor(this.state.timer / 60) < 10 ? "0" : ""
+            Math.floor(this.state.timer / 60) < 10 ? '0' : ''
           }${Math.floor(this.state.timer / 60)}:${
-            this.state.timer % 60 < 10 ? "0" : ""
+            this.state.timer % 60 < 10 ? '0' : ''
           }${this.state.timer % 60}`}
           startStop={this.state.startStop}
           reset={this.resetPomodoro}

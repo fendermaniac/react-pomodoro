@@ -48,11 +48,19 @@ class App extends Component {
   }
 
   updatePomodoro(e) {
+    e.preventDefault();
     switch (e.target.id) {
       case 'break-decrement':
         if (this.state.break > 1) {
           this.setState({
             break: this.state.break - 1,
+          },
+          () => { 
+            if (this.state.sessionLabel === 'Break') {
+              this.setState({
+              timer: this.state.break * 60
+            }) 
+            }
           });
         }
         break;
@@ -60,6 +68,13 @@ class App extends Component {
         if (this.state.break < 60) {
           this.setState({
             break: this.state.break + 1,
+          },
+          () => { 
+            if (this.state.sessionLabel === 'Break') {
+              this.setState({
+              timer: this.state.break * 60
+            }) 
+            }
           });
         }
         break;

@@ -1,0 +1,1 @@
+export const SWITCH_TO_BREAK = "SWITCH_TO_BREAK";

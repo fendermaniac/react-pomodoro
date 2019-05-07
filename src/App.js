@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
-import Timer from './Timer';
-import TimeConfig from './TimeConfig';
-import '../App.css';
+import Timer from './components/Timer';
+import TimeConfig from './components/TimeConfig';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +16,8 @@ class App extends Component {
       isPaused: false,
       startStop: 'Start',
     };
+    this.url = "https://archive.org/download/carlosnochi_yahoo_Beep/beep.mp3"
+    this.audioElement = new Audio(this.url);
     this.updatePomodoro = this.updatePomodoro.bind(this);
     this.resetPomodoro = this.resetPomodoro.bind(this);
     this.toggleTimer = this.toggleTimer.bind(this);
@@ -27,9 +29,8 @@ class App extends Component {
         timer: this.state.break * 60,
         sessionLabel: 'Break',
       });
-      const beep = document.getElementById('beep');
-      beep.currentTime = 0;
-      beep.play();
+      this.audioElement.currentTime = 0;
+      this.audioElement.play();
     } else if (this.state.timer < 0 && this.state.sessionLabel === 'Break') {
       clearInterval(this.countdown);
       this.setState({
@@ -41,11 +42,14 @@ class App extends Component {
         isPaused: false,
         startStop: 'Start',
       });
-      const beep = document.getElementById('beep');
-      beep.currentTime = 0;
-      beep.play();
+      this.audioElement.currentTime = 0;
+      this.audioElement.play();
     }
   }
+
+  play = () => {
+      this.audioElement.play();
+    }
 
   updatePomodoro(e) {
     e.preventDefault();
@@ -119,9 +123,8 @@ class App extends Component {
       isPaused: false,
       startStop: 'Start',
     });
-    const beep = document.getElementById('beep');
-    beep.pause();
-    beep.currentTime = 0;
+    this.audioElement.pause();
+    this.audioElement.currentTime = 0;
   }
 
   toggleTimer(e) {
@@ -176,6 +179,7 @@ class App extends Component {
           timeID="time-left"
           startStopID="start_stop"
           resetID="reset"
+          audioElement = {this.aaudioElement}
         />
         <TimeConfig
           className="time-config"

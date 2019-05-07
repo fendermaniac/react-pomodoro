@@ -10,7 +10,8 @@ const Timer = (
     toggleTimer, 
     startStop,
     resetID, 
-    reset
+    reset,
+    audioElement
   }
   ) => {
   return ( 
@@ -31,6 +32,7 @@ const Timer = (
     </button>
     <audio
       id="beep"
+      ref={audioElement}
       src="https://archive.org/download/carlosnochi_yahoo_Beep/beep.mp3"
     />
   </div>

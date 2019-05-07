@@ -1,1 +1,4 @@
 export const SWITCH_TO_BREAK = "SWITCH_TO_BREAK";
+export const TICK = "TICK";
+export const UPDATE_POMODORO = "UPDATE_POMODORO";
+export const DECREMENT_BREAK = "DECREMENT_BREAK";

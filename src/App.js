@@ -18,9 +18,6 @@ class App extends Component {
     };
     this.url = "https://archive.org/download/carlosnochi_yahoo_Beep/beep.mp3"
     this.audioElement = new Audio(this.url);
-    this.updatePomodoro = this.updatePomodoro.bind(this);
-    this.resetPomodoro = this.resetPomodoro.bind(this);
-    this.toggleTimer = this.toggleTimer.bind(this);
   }
 
   componentDidUpdate() {
@@ -51,7 +48,7 @@ class App extends Component {
       this.audioElement.play();
     }
 
-  updatePomodoro(e) {
+  updatePomodoro = e => {
     e.preventDefault();
     switch (e.target.id) {
       case 'break-decrement':
@@ -109,7 +106,7 @@ class App extends Component {
     }
   }
 
-  resetPomodoro() {
+  resetPomodoro = () => {
     if (this.state.sessionActive) {
       clearInterval(this.countdown);
     }
@@ -127,7 +124,7 @@ class App extends Component {
     this.audioElement.currentTime = 0;
   }
 
-  toggleTimer(e) {
+  toggleTimer = (e) => {
     if (!this.state.sessionActive) {
       this.countdown = setInterval(() => {
         this.setState({
